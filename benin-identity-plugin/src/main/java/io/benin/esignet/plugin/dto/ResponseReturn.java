@@ -1,0 +1,33 @@
+package io.peru.esignet.plugin.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+@JacksonXmlRootElement(localName = "return")
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ResponseReturn {
+
+    @JacksonXmlProperty(localName = "coResultado")
+    private String coResultado;
+
+    @JacksonXmlProperty(localName = "deResultado")
+    private String deResultado;
+
+    public DatosPersona getDatosPersona() {
+        return datosPersona;
+    }
+
+    public void setDatosPersona(DatosPersona datosPersona) {
+        this.datosPersona = datosPersona;
+    }
+
+    @JacksonXmlProperty(localName = "datosPersona")
+    private DatosPersona datosPersona;
+
+    public String getCoResultado() { return coResultado; }
+    public void setCoResultado(String coResultado) { this.coResultado = coResultado; }
+
+    public String getDeResultado() { return deResultado; }
+    public void setDeResultado(String deResultado) { this.deResultado = deResultado; }
+}
