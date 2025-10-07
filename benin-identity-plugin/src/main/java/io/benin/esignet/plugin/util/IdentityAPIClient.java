@@ -1,26 +1,15 @@
-package io.peru.esignet.plugin.util;
+package io.benin.esignet.plugin.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import io.mosip.esignet.api.exception.KycAuthException;
-import io.peru.esignet.plugin.dto.Envelope;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.benin.esignet.plugin.dto.Envelope;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 @Component
-@Slf4j
 public class IdentityAPIClient {
 
     @Value("${identity.endpoint}")
@@ -34,34 +23,6 @@ public class IdentityAPIClient {
 
     @Value("${identity.endpoint.ruc}")
     private String identityAPIRuc;
-
-    @Value("${identity.authcode.reissue.endpoint}")
-    private String authCodeReissueEndpoint;
-
-    @Value("${identity.oauth.token.endpoint}")
-    private String peruOauthTokenEndpoint;
-
-    @Value("${identity.client.id}")
-    private String clientId;
-
-    @Value("${identity.client.secret}")
-    private String clientSecret;
-
-    @Value("${identity.redirect.uri}")
-    private String redirectUri;
-
-    @Value("${identity.oidc.userinfo.endpoint}")
-    private String peruOIDCUserInfoEndpoint;
-
-    @Value("${identity.oidc.userinfo.dni.claim}")
-    private String dniClaim;
-
-    @Value("${identity.oauth.token.endpoint.payload}")
-    private String tokenPayload;
-
-
-    @Autowired
-    private ObjectMapper jsonMapper;  // For JSON parsing
 
     private XmlMapper xmlMapper = new XmlMapper();
 
@@ -101,85 +62,4 @@ public class IdentityAPIClient {
             throw new RuntimeException("HTTP error code: " + connection.getResponseCode());
         }
     }
-
-    public String exchangeAuthCodeForAccessToken(String authCode) throws KycAuthException {
-        try {
-            URL url = new URL(peruOauthTokenEndpoint); // Will set via @Value
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            connection.setDoOutput(true);
-            String payload=String.format(tokenPayload, URLEncoder.encode(authCode, StandardCharsets.UTF_8),
-                    URLEncoder.encode(clientId, StandardCharsets.UTF_8),
-                    URLEncoder.encode(clientSecret, StandardCharsets.UTF_8),
-                    URLEncoder.encode(redirectUri, StandardCharsets.UTF_8));
-
-           try (OutputStream os = connection.getOutputStream()) {
-                os.write(payload.getBytes());
-                os.flush();
-            }
-
-            String responseBody = getResponse(connection);
-
-            Map<String, Object> response = jsonMapper.readValue(responseBody, Map.class);
-            if (response.containsKey("access_token")) {
-                return response.get("access_token").toString();
-            }
-            log.error("Missing access_token in response: {} " , responseBody);
-
-        } catch (Exception e) {
-            log.error("Failed to exchange auth code for access token" , e);
-        }
-        throw new KycAuthException("auth_failed");
-    }
-
-
-    public String fetchUserInfo(String accessToken) throws KycAuthException {
-        try {
-            URL url = new URL(peruOIDCUserInfoEndpoint);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Authorization", "Bearer " + accessToken);
-
-            String responseBody = getResponse(connection);
-
-            String jwtPattern = "^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]*$";
-            if (Pattern.matches(jwtPattern, responseBody)) {
-                log.error("Response body matches the JWT pattern");
-                String[] parts = responseBody.split("\\.");
-                responseBody = new String(Base64.getUrlDecoder().decode(parts[1]), StandardCharsets.UTF_8);
-            }
-
-            Map<String, Object> response = jsonMapper.readValue(responseBody, Map.class);
-            if (response.containsKey(dniClaim)) {
-                return response.get(dniClaim).toString();
-            }
-            log.error("Missing Doc in userinfo: {}" , responseBody);
-
-        } catch (Exception e) {
-            log.error("Failed to get userInfo:" , e);
-        }
-        throw new KycAuthException("auth_failed");
-    }
-
-    private String getResponse(HttpURLConnection connection) throws IOException {
-        StringBuilder response = new StringBuilder();
-        int responseCode = connection.getResponseCode();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(
-                responseCode >= 200 && responseCode < 300 ? connection.getInputStream() : connection.getErrorStream(),
-                StandardCharsets.UTF_8))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                response.append(line);
-            }
-        } catch (IOException e) {
-            log.error("Failed to get read response:" , e);
-        } finally {
-            connection.disconnect();
-        }
-        return response.toString();
-    }
-
 }

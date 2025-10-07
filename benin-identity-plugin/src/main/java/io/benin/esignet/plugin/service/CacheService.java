@@ -1,6 +1,6 @@
-package io.peru.esignet.plugin.service;
+package io.benin.esignet.plugin.service;
 
-import io.peru.esignet.plugin.dto.KycAuth;
+import io.benin.esignet.plugin.dto.KycAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;

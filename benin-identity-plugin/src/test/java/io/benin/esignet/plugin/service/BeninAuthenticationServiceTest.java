@@ -1,24 +1,7 @@
-package io.peru.esignet.plugin.service;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.mosip.esignet.api.dto.*;
-import io.mosip.esignet.api.exception.KycAuthException;
-import io.mosip.esignet.api.exception.KycExchangeException;
-import io.mosip.esignet.api.exception.SendOtpException;
-import io.mosip.kernel.keymanagerservice.service.KeymanagerService;
-import io.mosip.kernel.signature.service.SignatureService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.client.RestTemplate;
-import java.util.Arrays;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+package io.benin.esignet.plugin.service;
 
 //@RunWith(MockitoJUnitRunner.class)
-public class PeruAuthenticationServiceTest {
+public class BeninAuthenticationServiceTest {
 
     /*@InjectMocks
     private PeruAuthenticationService peruAuthenticationService;

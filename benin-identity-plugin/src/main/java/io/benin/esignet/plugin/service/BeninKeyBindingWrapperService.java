@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-package io.peru.esignet.plugin.service;
+package io.benin.esignet.plugin.service;
 
 import com.nimbusds.jose.jwk.RSAKey;
 import io.mosip.esignet.api.dto.AuthChallenge;
@@ -14,7 +14,7 @@ import io.mosip.esignet.api.exception.KycAuthException;
 import io.mosip.esignet.api.exception.SendOtpException;
 import io.mosip.esignet.api.spi.KeyBinder;
 import io.mosip.esignet.api.util.ErrorConstants;
-import io.peru.esignet.plugin.dto.KycAuth;
+import io.benin.esignet.plugin.dto.KycAuth;
 import io.mosip.kernel.core.util.DateUtils;
 import io.mosip.kernel.keymanagerservice.dto.KeyPairGenerateRequestDto;
 import io.mosip.kernel.keymanagerservice.dto.SignatureCertificate;
@@ -40,10 +40,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@ConditionalOnProperty(value = "mosip.esignet.integration.key-binder", havingValue = "PeruKeyBindingWrapperService")
+@ConditionalOnProperty(value = "mosip.esignet.integration.key-binder", havingValue = "BeninKeyBindingWrapperService")
 @Component
 @Slf4j
-public class PeruKeyBindingWrapperService implements KeyBinder {
+public class BeninKeyBindingWrapperService implements KeyBinder {
 
     public static final String BINDING_SERVICE_APP_ID = "MOCK_BINDING_SERVICE";
 
@@ -102,7 +102,7 @@ public class PeruKeyBindingWrapperService implements KeyBinder {
             throw new KeyBindingException(e.getErrorCode());
         }
 
-        if(kycAuth==null || kycAuth.getDatosPersona()==null){
+        if(kycAuth==null){
             throw new KeyBindingException("peru-ida-006");
         }
 
@@ -111,7 +111,8 @@ public class PeruKeyBindingWrapperService implements KeyBinder {
         try {
             RSAKey rsaKey = RSAKey.parse(new JSONObject(publicKeyJWK).toJSONString());
             X509V3CertificateGenerator generator = new X509V3CertificateGenerator();
-            String username = kycAuth.getDatosPersona().getPrenombres();
+//            String username = kycAuth.getDatosPersona().getPrenombres();
+            String username = "mijan";
             generator.setSubjectDN(new X500Principal("CN=" + username));
             generator.setIssuerDN(new X500Principal("CN=Peru-IDA"));
             LocalDateTime notBeforeDate = DateUtils.getUTCCurrentDateTime();

@@ -1,4 +1,4 @@
-package io.peru.esignet.plugin.service;
+package io.benin.esignet.plugin.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.mosip.esignet.api.dto.*;

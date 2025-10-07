@@ -1,4 +1,4 @@
-package io.peru.esignet.plugin.dto;
+package io.benin.esignet.plugin.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -56,8 +56,6 @@ public class DatosPersona implements Serializable {
     protected String estadoCivil;
     @JacksonXmlProperty
     protected String restriccion;
-    @JacksonXmlProperty
-    protected String foto;
 
     /**
      * Gets the value of the dni property.
@@ -273,30 +271,6 @@ public class DatosPersona implements Serializable {
      */
     public void setRestriccion(String value) {
         this.restriccion = value;
-    }
-
-    /**
-     * Gets the value of the foto property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public String getFoto() {
-        return foto;
-    }
-
-    /**
-     * Sets the value of the foto property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setFoto(String value) {
-        this.foto = value;
     }
 
 }

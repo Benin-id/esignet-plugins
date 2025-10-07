@@ -1,4 +1,4 @@
-package io.peru.esignet.plugin.dto;
+package io.benin.esignet.plugin.dto;
 
 import lombok.Data;
 

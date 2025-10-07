@@ -3,14 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.benin.esignet</groupId>
+	<groupId>io.benin-esignet</groupId>
 	<artifactId>benin-identity-plugin</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
 	<name>benin-identity-plugin</name>
 	<description>benin identity plugin to integrate with eSignet</description>
-	<url>https://github.com/peru-id/esignet-plugins</url>
+	<url>https://github.com/Benin-id/esignet-plugins.git</url>
 	
 	<licenses>
 		<license>
@@ -19,9 +19,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:git:git://github.com/peru-id/esignet-plugins.git</connection>
-		<developerConnection>scm:git:ssh://github.com:peru-id/esignet-plugins.git</developerConnection>
-		<url>https://github.com/peru-id/esignet-plugins</url>
+		<connection>scm:git:git://github.com/Benin-id/esignet-plugins.git</connection>
+		<developerConnection>scm:git:ssh://github.com:Benin-id/esignet-plugins.git</developerConnection>
+		<url>https://github.com/Benin-id/esignet-plugins</url>
 		<tag>HEAD</tag>
 	</scm>
 
@@ -30,7 +30,7 @@
 			<name>Mosip</name>
 			<email>mosip.emailnotifier@gmail.com</email>
 			<organization>io.mosip</organization>
-			<organizationUrl>https://github.com/peru-id/esignet-plugins</organizationUrl>
+			<organizationUrl>https://github.com/Benin-id/esignet-plugins</organizationUrl>
 		</developer>
 	</developers>
 
@@ -54,7 +54,7 @@
 		<spring.boot.version>2.3.6.RELEASE</spring.boot.version>
 
 		<kernel-keymanager-service.version>1.2.1.0</kernel-keymanager-service.version>
-		<esignet.version>1.4.1</esignet.version>
+		<esignet.version>1.5.1</esignet.version>
 
 		<sonar.exclusions>**/dto/**,**/entity/**,**/exception/**,**/spi/**,**/advice/**,**/config/**</sonar.exclusions>
 		<sonar.cpd.exclusions>**/dto/**,**/entity/**,**/config/**</sonar.cpd.exclusions>

@@ -1,4 +1,5 @@
-package io.peru.esignet.plugin.dto;
+package io.benin.esignet.plugin.dto;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
